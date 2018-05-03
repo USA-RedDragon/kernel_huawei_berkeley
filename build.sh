@@ -10,7 +10,7 @@ export CROSS_COMPILE="ccache /home/reddragon/aarch64-linux-android-4.9/bin/aarch
 export ARCH=arm64
 export shouldclean="0"
 export istest="0"
-export deviceconfig="blu_spark_defconfig"
+export deviceconfig="werewolf_defconfig"
 export device="berkeley"
 export modules="0"
 
