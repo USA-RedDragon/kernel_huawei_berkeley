@@ -46,9 +46,7 @@ function build() {
 
     ./tools/mkbootimg --kernel ${zImagePath} --base ${BASE} --cmdline "${KERNEL_CMDLINE}" --tags_offset ${TAGS_OFFSET} --kernel_offset ${KERNEL_OFFSET} --ramdisk_offset ${RAMDISK_OFFSET} --os_version ${OS_VERSION} --os_patch_level ${PATCH_LEVEL}  --output ${outdir}/Werewolf-${device}-${version}.img
 
-    if [ ! -e ${outdir}/Werewolf-${device}-${version}.img ] ; then
-        echo -e "\n\e[32m***** Build Finished: ${outdir}/Werewolf-${device}-${version}.img *****\e[0m\n"
-    fi
+    echo -e "\n\e[32m***** Build Finished: ${outdir}/Werewolf-${device}-${version}.img *****\e[0m\n"
 
 }
 
