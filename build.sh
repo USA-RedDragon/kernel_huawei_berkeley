@@ -6,7 +6,7 @@ export makeopts="-j$(nproc)"
 export zImagePath="build/arch/arm64/boot/Image.gz"
 export KBUILD_BUILD_USER=USA-RedDragon
 export KBUILD_BUILD_HOST=EdgeOfEternity
-export CROSS_COMPILE="ccache /home/reddragon/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+export CROSS_COMPILE="ccache /android-src/invictrix/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
 export ARCH=arm64
 export shouldclean="0"
 export istest="0"
@@ -26,6 +26,8 @@ export TAGS_OFFSET=0x07A00000
 
 export version=$(cat version)
 
+export kernel_out=${outdir}/Werewolf-${device}-${version}.img
+
 function build() {
     if [[ $shouldclean =~ "1" ]] ; then
         rm -rf build
@@ -38,15 +40,16 @@ function build() {
 
     if [ ! -e ${zImagePath} ] ; then
         echo -e "\n\e[31m***** Build Failed *****\e[0m\n"
+	exit
     fi
 
     if ! [ -d ${outdir} ] ; then
         mkdir ${outdir}
     fi
 
-    ./tools/mkbootimg --kernel ${zImagePath} --base ${BASE} --cmdline "${KERNEL_CMDLINE}" --tags_offset ${TAGS_OFFSET} --kernel_offset ${KERNEL_OFFSET} --ramdisk_offset ${RAMDISK_OFFSET} --os_version ${OS_VERSION} --os_patch_level ${PATCH_LEVEL}  --output ${outdir}/Werewolf-${device}-${version}.img
+    ./tools/mkbootimg --kernel ${zImagePath} --base ${BASE} --cmdline "${KERNEL_CMDLINE}" --tags_offset ${TAGS_OFFSET} --kernel_offset ${KERNEL_OFFSET} --ramdisk_offset ${RAMDISK_OFFSET} --os_version ${OS_VERSION} --os_patch_level ${PATCH_LEVEL}  --output ${kernel_out}
 
-    echo -e "\n\e[32m***** Build Finished: ${outdir}/Werewolf-${device}-${version}.img *****\e[0m\n"
+    echo -e "\n\e[32m***** Build Finished: ${kernel_out} *****\e[0m\n"
 
 }
 
