@@ -194,6 +194,13 @@ static u32 vendor_oui = CONFIG_DHD_SET_RANDOM_MAC_VAL;
 
 #include <wl_android.h>
 
+static int wlan_rx_wake_divide = 1;
+module_param(wlan_rx_wake_divide, int, 0644);
+static int wlan_ctrl_divide = 1;
+module_param(wlan_ctrl_divide, int, 0644);
+static int wlan_wd_wake_multiply = 1;
+module_param(wlan_wd_wake_multiply, int, 0644);
+
 /* Maximum STA per radio */
 #define DHD_MAX_STA     32
 
@@ -11393,10 +11400,10 @@ int dhd_os_wake_lock_timeout(dhd_pub_t *pub)
 #ifdef CONFIG_HAS_WAKELOCK
 		if (dhd->wakelock_rx_timeout_enable)
 			wake_lock_timeout(&dhd->wl_rxwake,
-				msecs_to_jiffies(dhd->wakelock_rx_timeout_enable));
+				msecs_to_jiffies(dhd->wakelock_rx_timeout_enable/wlan_rx_wake_divide));
 		if (dhd->wakelock_ctrl_timeout_enable)
 			wake_lock_timeout(&dhd->wl_ctrlwake,
-				msecs_to_jiffies(dhd->wakelock_ctrl_timeout_enable));
+				msecs_to_jiffies(dhd->wakelock_ctrl_timeout_enable/wlan_ctrl_divide));
 #endif
 		dhd->wakelock_rx_timeout_enable = 0;
 		dhd->wakelock_ctrl_timeout_enable = 0;
@@ -13052,7 +13059,7 @@ dhd_watchdog_time_write(struct dhd_info *dev, const char *buf, size_t count)
 	//In order to think security problem, write dead 200 ms
 	if (time > 0) {
 		DHD_ERROR(("%s: Open the firmware log and enable watchdog thread during 200ms\n", __FUNCTION__));
-		dhd_watchdog_ms = time_200ms;
+		dhd_watchdog_ms = time_200ms*wlan_wd_wake_multiply;
 		dhd_console_ms = time_200ms;
 		dhd_os_wd_timer(dhd, time_200ms);
 	} else if (time == 0){
