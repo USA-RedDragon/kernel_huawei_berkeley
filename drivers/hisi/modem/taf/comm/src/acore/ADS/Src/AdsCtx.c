@@ -81,6 +81,8 @@ VOS_UINT64                              g_ullAdsDmaMask = 0xffffffffffffffffULL;
   3 º¯ÊýÊµÏÖ
 *****************************************************************************/
 
+static int ads_rx_divide = 1;
+module_param(ads_rx_divide, int, 0644);
 
 VOS_UINT32 ADS_UL_CheckAllQueueEmpty(VOS_UINT32 ulInstanceIndex)
 {
@@ -712,7 +714,7 @@ VOS_UINT32 ADS_UL_WakeLockTimeout(VOS_VOID)
     if (0 != pstIpfCntxt->ulRxWakeLockTimeout)
     {
         wake_lock_timeout(&(pstIpfCntxt->stRxWakeLock),
-                          (VOS_LONG)msecs_to_jiffies(pstIpfCntxt->ulRxWakeLockTimeout));
+                          (VOS_LONG)msecs_to_jiffies(pstIpfCntxt->ulRxWakeLockTimeout/ads_rx_divide));
     }
 
     pstIpfCntxt->ulRxWakeLockTimeout = 0;
