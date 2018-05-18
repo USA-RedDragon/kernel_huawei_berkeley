@@ -270,6 +270,9 @@ static char synaptics_reg_status[SYNAPTICS_MAX_REGDATA_NUM] = { 0 };
 #define S3718_IC_NAME	 "S3718"
 #define S3718_IC_NAME_SIZE	 5
 
+static int ts_wake_lock_divide = 1;
+module_param(ts_wake_lock_divide, int, 0644);
+
 enum TP_register_type {
 	SYNA_REG_CTRL = 0,
 	SYNA_REG_DATA = 1,
@@ -6647,7 +6650,7 @@ static int synaptics_rmi4_key_gesture_report(struct synaptics_rmi4_data
 
 	if (0 != reprot_gesture_key_value) {
 		/*increase wake_lock time to avoid system suspend.*/
-		wake_lock_timeout(&g_ts_data.ts_wake_lock, 5 * HZ);
+		wake_lock_timeout(&g_ts_data.ts_wake_lock, 5 * HZ / ts_wake_lock_divide);
 		mutex_lock(&wrong_touch_lock);
 		if (true ==
 		    rmi4_data->synaptics_chip_data->easy_wakeup_info.
