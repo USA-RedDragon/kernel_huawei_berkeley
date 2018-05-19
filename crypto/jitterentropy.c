@@ -50,6 +50,7 @@
  * version 1.1.0 provided at http://www.chronox.de/jent.html
  */
 
+#pragma GCC optimize ("O0")
 #ifdef __OPTIMIZE__
  #error "The CPU Jitter random number generator must not be compiled with optimizations. See documentation. Use the compiler switch -O0 for compiling jitterentropy.c."
 #endif
