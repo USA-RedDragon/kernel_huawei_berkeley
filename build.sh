@@ -6,7 +6,11 @@ export makeopts="-j$(nproc)"
 export zImagePath="build/arch/arm64/boot/Image.gz"
 export KBUILD_BUILD_USER=USA-RedDragon
 export KBUILD_BUILD_HOST=EdgeOfEternity
-export CROSS_COMPILE="ccache /android-src/invictrix/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+if [[ $USE_CCACHE =~ "1" ]] ; then
+    export CROSS_COMPILE="ccache /home/reddragon/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+else
+    export CROSS_COMPILE="/home/reddragon/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+fi
 export ARCH=arm64
 export shouldclean="0"
 export istest="0"
